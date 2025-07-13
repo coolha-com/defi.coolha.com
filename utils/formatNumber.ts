@@ -1,5 +1,6 @@
 'use client'
-export function formatNumberWithUnit(number: number | undefined | null): string {
+
+export function formatNumber(number: number | undefined | null, p0?: number): string {
     if (number == null) { // 检查 number 是否为 null 或 undefined
         return '';
     }
