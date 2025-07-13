@@ -1,0 +1,27 @@
+:root {
+    /* UI */
+    --link-hover-background: rgba(255, 255, 255, 0.5) !important;
+    --navlink-color: #545353d3 !important;
+    --navlink-active: #3f1de7;
+    --button-bg: #00000011;
+}
+
+[data-theme='light'] {
+
+    /* UI */
+    --link-hover-background: rgba(255, 255, 255, 0.5) !important;
+    --navlink-color: #545353d3 !important;
+    --navlink-active: #3f1de7;
+    --button-bg: #00000011;
+}
+
+[data-theme='dark'] {
+
+    --button-bg: #ffffff2e;
+    /* UI hover */
+    --link-hover-background: rgba(255, 255, 255, 0.05) !important;
+    --navlink-color: #ece1e1d3 !important;
+    --navlink-active: #C0E218;
+
+}
+

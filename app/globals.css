@@ -1,26 +1,140 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* 
+ * daisyUI 主题配置
+ * 启用 light 和 dark 主题，light 为默认主题，dark 为暗色模式首选主题
+ * 参考文档：https://daisyui.com/docs/themes/
+ */
+@plugin "daisyui" {
+  themes:
+    light --default,        /* 设置 light 为默认主题 */
+    dark --prefersdark;     /* 设置 dark 为暗色模式首选主题 */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* 
+ * 自定义 Light 主题配置
+ * 基于 daisyUI 内置 light 主题，覆盖部分颜色和样式变量
+ * 保持 Coolha 品牌色彩 (#C0E218) 和统一的圆角设计
+ */
+@plugin "daisyui/theme" {
+  name: "light";           /* 主题名称 */
+  default: true;           /* 设为默认主题 */
+  prefersdark: false;      /* 非暗色模式主题 */
+  color-scheme: light;     /* 浏览器 UI 配色方案 */
+  
+  /* 基础背景色系 */
+  --color-base-100: #ffffff;     /* 主背景色 - 纯白 */
+  --color-base-200: #fafafa;     /* 次级背景色 - 浅灰 */
+  --color-base-300: #f3f4f6;     /* 三级背景色 - 中浅灰 */
+  --color-base-content: #000000; /* 基础文字色 - 黑色 */
+  
+  /* 品牌主色调 - Coolha 绿色 */
+  --color-primary: #C0E218;      /* 主色 - Coolha 品牌绿 */
+  --color-primary-content: #000000; /* 主色上的文字色 */
+  
+  /* 辅助色系 */
+  --color-secondary: #f3f4f6;        /* 次要色 - 中性灰 */
+  --color-secondary-content: #ffffff; /* 次要色上的文字色 */
+  --color-accent: #ffffff;            /* 强调色 - 白色 */
+  --color-accent-content: #000000;    /* 强调色上的文字色 */
+  --color-neutral: #374151;           /* 中性色 - 深灰 */
+  --color-neutral-content: #ffffff;   /* 中性色上的文字色 */
+  
+  /* 状态色系 */
+  --color-info: #3b82f6;         /* 信息色 - 蓝色 */
+  --color-info-content: #ffffff; /* 信息色上的文字色 */
+  --color-success: #10b981;      /* 成功色 - 绿色 */
+  --color-success-content: #ffffff; /* 成功色上的文字色 */
+  --color-warning: #f59e0b;      /* 警告色 - 橙色 */
+  --color-warning-content: #ffffff; /* 警告色上的文字色 */
+  --color-error: #f59e0b;        /* 错误色 - 橙红色 */
+  --color-error-content: #ffffff; /* 错误色上的文字色 */
+  
+  /* 圆角设置 - 统一使用较大圆角营造现代感 */
+  --radius-selector: 1.5rem;  /* 选择器圆角 */
+  --radius-field: 1.5rem;     /* 输入框圆角 */
+  --radius-box: 1.5rem;       /* 容器圆角 */
+  
+  /* 尺寸设置 */
+  --size-selector: 0.25rem;   /* 选择器尺寸 */
+  --size-field: 0.25rem;      /* 输入框尺寸 */
+  
+  /* 边框和效果 */
+  --border: 1px;              /* 边框宽度 */
+  --depth: 1;                 /* 深度效果 */
+  --noise: 0.5;               /* 噪点效果 */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 
+ * 自定义 Dark 主题配置
+ * 基于 daisyUI 内置 dark 主题，覆盖部分颜色和样式变量
+ * 保持 Coolha 品牌色彩 (#C0E218) 和统一的圆角设计
+ */
+@plugin "daisyui/theme" {
+  name: "dark";            /* 主题名称 */
+  default: false;          /* 非默认主题 */
+  prefersdark: false;       /* 暗色模式首选主题 */
+  color-scheme: dark;      /* 浏览器 UI 配色方案 */
+  
+  /* 基础背景色系 - 暗色主题配色 */
+  --color-base-100: #000000;     /* 主背景色 - 深灰 */
+  --color-base-200: #222222;     /* 次级背景色 - 中深灰 */
+  --color-base-300: #333333;     /* 三级背景色 - 浅深灰 */
+  --color-base-content: #ffffff; /* 基础文字色 - 白色 */
+  
+  /* 品牌主色调 - Coolha 绿色（在暗色主题中保持一致） */
+  --color-primary: #C0E218;      /* 主色 - Coolha 品牌绿 */
+  --color-primary-content: #000000; /* 主色上的文字色 - 黑色（绿色背景上用黑字） */
+  
+  /* 辅助色系 - 暗色主题适配 */
+  --color-secondary: #8b5cf6;        /* 次要色 - 紫色 */
+  --color-secondary-content: #ffffff; /* 次要色上的文字色 - 白色 */
+  --color-accent: #06b6d4;            /* 强调色 - 青色 */
+  --color-accent-content: #ffffff;    /* 强调色上的文字色 - 白色 */
+  --color-neutral: #64748b;           /* 中性色 - 石板灰 */
+  --color-neutral-content: #f1f5f9;   /* 中性色上的文字色 - 浅色 */
+  
+  /* 状态色系 - 暗色主题优化 */
+  --color-info: #60a5fa;         /* 信息色 - 亮蓝色 */
+  --color-info-content: #000000; /* 信息色上的文字色 - 黑色 */
+  --color-success: #34d399;      /* 成功色 - 亮绿色 */
+  --color-success-content: #000000; /* 成功色上的文字色 - 黑色 */
+  --color-warning: #fbbf24;      /* 警告色 - 亮黄色 */
+  --color-warning-content: #000000; /* 警告色上的文字色 - 黑色 */
+  --color-error: #f87171;        /* 错误色 - 亮红色 */
+  --color-error-content: #000000; /* 错误色上的文字色 - 黑色 */
+  
+  /* 圆角设置 - 与亮色主题保持一致的现代化圆角 */
+  --radius-selector: 1.5rem;  /* 选择器圆角 */
+  --radius-field: 1.5rem;     /* 输入框圆角 */
+  --radius-box: 1.5rem;       /* 容器圆角 */
+  
+  /* 尺寸设置 - 与亮色主题保持一致 */
+  --size-selector: 0.25rem;   /* 选择器尺寸 */
+  --size-field: 0.25rem;      /* 输入框尺寸 */
+  
+  /* 边框和效果 - 与亮色主题保持一致 */
+  --border: 1px;              /* 边框宽度 */
+  --depth: 1;                 /* 深度效果 */
+  --noise: 0.5;               /* 噪点效果 */
 }
 
+
+
+/* 全局样式 */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
+
+/*--选择器----*/
+::selection {
+    background: #C0E218;
+    color: #000000;
+
+}
+
+::-moz-selection {
+    color: #000000;
+    background: #C0E218;
+}
+
