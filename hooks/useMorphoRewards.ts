@@ -28,10 +28,21 @@ export function useMorphoRewards() {
       if (!address) return null;
       
       try {
-        // 调用 Morpho Rewards API
+        // 调用 Morpho Rewards API with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        
         const response = await fetch(
-          `https://rewards.morpho.org/v1/users/${address}/distributions`
+          `https://rewards.morpho.org/v1/users/${address}/distributions`,
+          { 
+            signal: controller.signal,
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }
         );
+        
+        clearTimeout(timeoutId);
         
         if (!response.ok) {
           throw new Error('Failed to fetch rewards');
@@ -67,8 +78,12 @@ export function useMorphoRewards() {
       }
     },
     enabled: !!address,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchInterval: 60 * 1000, // 1 minute
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    refetchInterval: 5 * 60 * 1000, // 5 minutes
+    retry: 2,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true
   });
 }
 

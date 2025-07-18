@@ -15,12 +15,8 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ className }) => {
 
   const navItems = [
-    { href: '/', label: '首页' },
-    { href: '/swap', label: '交换' },
+    { href: '/earn', label: '赚取' },
     { href: '/borrow', label: '借贷' },
-    { href: '/pools', label: '流动性' },
-    { href: '/farms', label: '农场' },
-    { href: '/analytics', label: '数据' },
   ];
 
   return (
@@ -67,10 +63,10 @@ export const Navbar: React.FC<NavbarProps> = ({ className }) => {
             height={32}
           />
         </Link>
-      </div>
 
-      {/* Desktop menu */}
-      <div className="navbar-center hidden lg:flex">
+
+              {/* Desktop menu */}
+      <div className=" hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           {navItems.map((item) => (
             <li key={item.href}>
@@ -84,6 +80,9 @@ export const Navbar: React.FC<NavbarProps> = ({ className }) => {
           ))}
         </ul>
       </div>
+      </div>
+
+
 
       {/* Theme toggle and Connect wallet button */}
       <div className="navbar-end gap-2">

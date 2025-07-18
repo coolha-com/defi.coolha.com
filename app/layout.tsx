@@ -4,6 +4,7 @@ import { Providers } from "@/config/Providers";
 import { Navbar } from "@/components/layout/Navbar";
 import "./globals.css";
 import "./theme.css";
+import Footer from "@/components/layout/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
           <main className="min-h-screen">
             {children}
           </main>
+          <Footer />
         </Providers>
       </body>
     </html>

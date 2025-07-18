@@ -14,12 +14,15 @@ export default function Home() {
       <div className="hero min-h-[calc(100vh-4rem)] bg-gradient-to-br from-primary/20 to-secondary/20">
         <div className="hero-content text-center">
           <div className="max-w-md">
-            <h1 className="text-5xl font-bold text-primary">Coolha DeFi</h1>
+            <h1 className="text-7xl font-bold text-primary">Coolha DeFi</h1>
             <p className="py-6 text-base-content">
-              欢迎来到去中心化金融平台，体验最新的区块链技术和数字资产管理。
+              Coolha DeFi 是一个仅针对去中心化金融服务的平台
             </p>
-            <Link href={`/`} className="btn btn-primary btn-lg gap-2">
-              开始
+            <Link href={`/earn`} className="btn btn-primary btn-lg gap-2 m-2">
+              开始赚取
+            </Link>
+            <Link href={`/borrow`} className="btn btn-primary btn-lg gap-2 m-2">
+              抵押借贷
             </Link>
           </div>
         </div>
@@ -98,15 +101,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="footer footer-center p-10 bg-base-300 text-base-content">
-        <div>
-          <p className="font-bold">
-            DeFi Coolha <br />提供可靠的去中心化金融服务
-          </p>
-          <p>Copyright © 2024 - All right reserved</p>
-        </div>
-      </footer>
+
     </div>
   );
 }

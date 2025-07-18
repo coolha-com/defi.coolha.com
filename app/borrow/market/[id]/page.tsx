@@ -36,7 +36,7 @@ export default function MarketPage({ params }: MarketPageProps) {
       <div className="breadcrumbs text-sm mb-6">
         <ul>
           <li><Link href="/borrow">借贷市场</Link></li>
-          <li>{AddressTruncate(market.collateralToken)}/{AddressTruncate(market.loanToken)}</li>
+          <li>{market.collateralTokenSymbol || 'Unknown'}/{market.loanTokenSymbol || 'Unknown'}</li>
         </ul>
       </div>
 
@@ -46,10 +46,10 @@ export default function MarketPage({ params }: MarketPageProps) {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold mb-2">
-                {AddressTruncate(market.collateralToken)} / {AddressTruncate(market.loanToken)}
+                {market.collateralTokenSymbol || 'Unknown'} / {market.loanTokenSymbol || 'Unknown'}
               </h1>
               <p className="text-lg opacity-70">
-                抵押 {AddressTruncate(market.collateralToken)} 借贷 {AddressTruncate(market.loanToken)}
+                抵押 {market.collateralTokenSymbol || 'Unknown'} 借贷 {market.loanTokenSymbol || 'Unknown'}
               </p>
             </div>
             
@@ -120,13 +120,19 @@ export default function MarketPage({ params }: MarketPageProps) {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <div className="text-sm opacity-70 mb-1">抵押品代币</div>
-                        <div className="font-mono text-sm break-all">
+                        <div className="font-semibold">
+                          {market.collateralTokenSymbol || 'Unknown'}
+                        </div>
+                        <div className="font-mono text-xs opacity-60 break-all">
                           {market.collateralToken}
                         </div>
                       </div>
                       <div>
                         <div className="text-sm opacity-70 mb-1">借贷代币</div>
-                        <div className="font-mono text-sm break-all">
+                        <div className="font-semibold">
+                          {market.loanTokenSymbol || 'Unknown'}
+                        </div>
+                        <div className="font-mono text-xs opacity-60 break-all">
                           {market.loanToken}
                         </div>
                       </div>

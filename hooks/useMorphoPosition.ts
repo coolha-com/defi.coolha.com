@@ -2,8 +2,9 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useAccount, usePublicClient } from 'wagmi';
-import { ChainId, getChainAddresses } from '@morpho-org/blue-sdk';
+import { ChainId, getChainAddresses, MarketId } from '@morpho-org/blue-sdk';
 import { fetchPosition } from '@morpho-org/blue-sdk-viem';
+import type { IPosition } from '@morpho-org/blue-sdk';
 import { Address } from 'viem';
 import { MarketConfig } from './useMorphoMarkets';
 
@@ -33,16 +34,21 @@ export function useMorphoPosition(
       const addresses = getChainAddresses(chainId);
       
       try {
-        // 生成市场ID
-        const marketId = {
-          loanToken: marketParams.loanToken,
-          collateralToken: marketParams.collateralToken,
-          oracle: marketParams.oracle,
-          irm: marketParams.irm,
-          lltv: marketParams.lltv,
-        };
+        // 确保市场ID是正确的 MarketId 格式
+        const marketId = marketParams.id as MarketId;
         
-        const position = await fetchPosition(address, marketId, publicClient);
+        // 验证 marketId 格式
+        if (!marketId || !marketId.startsWith('0x')) {
+          throw new Error(`Invalid market ID format: ${marketId}`);
+        }
+        
+        // 添加超时处理
+        const fetchPromise = fetchPosition(address, marketId, publicClient);
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Position fetch timeout')), 8000)
+        );
+        
+        const position = await Promise.race([fetchPromise, timeoutPromise]) as IPosition;
 
         // 计算健康因子和 LTV
         const collateralValue = position.collateral; // 需要根据价格计算实际价值
@@ -69,8 +75,12 @@ export function useMorphoPosition(
       }
     },
     enabled: !!publicClient && !!address && !!marketParams,
-    staleTime: 10 * 1000, // 10 seconds
-    refetchInterval: 15 * 1000, // 15 seconds
+    staleTime: 30 * 1000, // 30 seconds
+    refetchInterval: 60 * 1000, // 1 minute
+    retry: 2,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true
   });
 }
 
@@ -88,7 +98,11 @@ export function useMorphoPositions(chainId: ChainId = ChainId.EthMainnet) {
       return [];
     },
     enabled: !!publicClient && !!address,
-    staleTime: 30 * 1000,
-    refetchInterval: 60 * 1000,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchInterval: 5 * 60 * 1000, // 5 minutes
+    retry: 2,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true
   });
 }
