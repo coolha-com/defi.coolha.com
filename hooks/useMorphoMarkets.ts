@@ -2,19 +2,17 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { usePublicClient } from 'wagmi';
-import { ChainId, getChainAddresses, Market, MarketId as MorphoMarketId } from '@morpho-org/blue-sdk';
+import { ChainId, getChainAddresses, Market, MarketParams, MarketId as MorphoMarketId } from '@morpho-org/blue-sdk';
 import '@morpho-org/blue-sdk-viem/lib/augment/Market';
+import '@morpho-org/blue-sdk-viem/lib/augment/MarketParams';
 import { Address } from 'viem';
 
-export interface MarketConfig {
+export interface ExtendedMarketConfig {
   id: string;
-  loanToken: Address;
-  collateralToken: Address;
-  oracle: Address;
-  irm: Address;
-  lltv: bigint;
+  config: MarketParams;
   loanTokenSymbol?: string;
   collateralTokenSymbol?: string;
+  marketData?: Market | null;
 }
 
 export function useMorphoMarkets(chainId: ChainId = ChainId.EthMainnet) {
@@ -31,32 +29,38 @@ export function useMorphoMarkets(chainId: ChainId = ChainId.EthMainnet) {
       const productionMarkets = [
         // wstETH/WETH 市场
         {
-          loanToken: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' as Address, // WETH
-          collateralToken: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0' as Address, // wstETH
-          oracle: '0x2a01EB9496094dA03c4E364Def50f5aD1280AD72' as Address,
-          irm: '0x870aC11D48B15DB9a138Cf899d20F13F79Ba00BC' as Address,
-          lltv: BigInt('945000000000000000'), // 94.5%
+          config: new MarketParams({
+            loanToken: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' as Address, // WETH
+            collateralToken: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0' as Address, // wstETH
+            oracle: '0x2a01EB9496094dA03c4E364Def50f5aD1280AD72' as Address,
+            irm: '0x870aC11D48B15DB9a138Cf899d20F13F79Ba00BC' as Address,
+            lltv: BigInt('945000000000000000'), // 94.5%
+          }),
           loanTokenSymbol: 'WETH',
           collateralTokenSymbol: 'wstETH',
         },
         // WETH/USDT 市场 (用户提供的市场ID)
         {
-          loanToken: '0xdAC17F958D2ee523a2206206994597C13D831ec7' as Address, // USDT
-          collateralToken: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' as Address, // WETH
-          oracle: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419' as Address, // ETH/USD Oracle
-          irm: '0x870aC11D48B15DB9a138Cf899d20F13F79Ba00BC' as Address,
-          lltv: BigInt('860000000000000000'), // 86%
+          config: new MarketParams({
+            loanToken: '0xdAC17F958D2ee523a2206206994597C13D831ec7' as Address, // USDT
+            collateralToken: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' as Address, // WETH
+            oracle: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419' as Address, // ETH/USD Oracle
+            irm: '0x870aC11D48B15DB9a138Cf899d20F13F79Ba00BC' as Address,
+            lltv: BigInt('860000000000000000'), // 86%
+          }),
           marketId: '0xdbffac82c2dc7e8aa781bd05746530b0068d80929f23ac1628580e27810bc0c5', // 用户提供的市场ID
           loanTokenSymbol: 'USDT',
           collateralTokenSymbol: 'WETH',
         },
         // USDC/WETH 市场
         {
-          loanToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' as Address, // USDC
-          collateralToken: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' as Address, // WETH
-          oracle: '0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6' as Address, // USDC/USD Oracle
-          irm: '0x870aC11D48B15DB9a138Cf899d20F13F79Ba00BC' as Address,
-          lltv: BigInt('860000000000000000'), // 86%
+          config: new MarketParams({
+            loanToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' as Address, // USDC
+            collateralToken: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' as Address, // WETH
+            oracle: '0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6' as Address, // USDC/USD Oracle
+            irm: '0x870aC11D48B15DB9a138Cf899d20F13F79Ba00BC' as Address,
+            lltv: BigInt('860000000000000000'), // 86%
+          }),
           loanTokenSymbol: 'USDC',
           collateralTokenSymbol: 'WETH',
         },
@@ -65,8 +69,8 @@ export function useMorphoMarkets(chainId: ChainId = ChainId.EthMainnet) {
       const markets = await Promise.all(
         productionMarkets.map(async (market) => {
           try {
-            // 使用预定义的市场ID或生成一个临时ID
-            const marketId = (market.marketId || `${market.loanToken}-${market.collateralToken}`) as MorphoMarketId;
+            // 使用预定义的市场ID或使用 MarketConfig 的 id
+            const marketId = (market.marketId || market.config.id) as MorphoMarketId;
             
             // 尝试获取真实市场数据
             let marketData;
@@ -95,7 +99,9 @@ export function useMorphoMarkets(chainId: ChainId = ChainId.EthMainnet) {
             
             return {
               id: marketId,
-              ...market,
+              config: market.config,
+              loanTokenSymbol: market.loanTokenSymbol,
+              collateralTokenSymbol: market.collateralTokenSymbol,
               marketData,
             };
           } catch (error) {

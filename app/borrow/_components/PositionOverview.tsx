@@ -1,12 +1,12 @@
 'use client';
 
 import { useMorphoPosition } from '@/hooks/useMorphoPosition';
-import { MarketConfig } from '@/hooks/useMorphoMarkets';
+import { ExtendedMarketConfig } from '@/hooks/useMorphoMarkets';
 import { formatNumber } from '@/utils/formatNumber';
 import { formatUnits } from 'viem';
 
 interface PositionOverviewProps {
-  marketParams: MarketConfig | null;
+  marketParams: ExtendedMarketConfig | null;
 }
 
 export function PositionOverview({ marketParams }: PositionOverviewProps) {

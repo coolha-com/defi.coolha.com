@@ -52,17 +52,17 @@ export function MarketList() {
                     <div className="flex-1">
                       <h3 className="card-title text-lg">
                         <span className="badge badge-primary mr-2">抵押品</span>
-                        {AddressTruncate(market.collateralToken)}
+                        {AddressTruncate(market.config.collateralToken)}
                       </h3>
                       <p className="text-sm opacity-70 mt-1">
                         <span className="badge badge-secondary mr-2">借贷资产</span>
-                        {AddressTruncate(market.loanToken)}
+                        {AddressTruncate(market.config.loanToken)}
                       </p>
                     </div>
                     
                     <div className="text-right">
                       <div className="stat-value text-lg text-primary">
-                        {formatNumber(Number(market.lltv) / 1e18 * 100, 1)}%
+                        {formatNumber(Number(market.config.lltv) / 1e18 * 100, 1)}%
                       </div>
                       <div className="stat-desc">最大 LTV</div>
                     </div>
@@ -94,10 +94,10 @@ export function MarketList() {
                   
                   <div className="card-actions justify-end mt-4">
                     <div className="badge badge-outline">
-                      Oracle: {AddressTruncate(market.oracle)}
+                      Oracle: {AddressTruncate(market.config.oracle)}
                     </div>
                     <div className="badge badge-outline">
-                      IRM: {AddressTruncate(market.irm)}
+                      IRM: {AddressTruncate(market.config.irm)}
                     </div>
                   </div>
                 </div>

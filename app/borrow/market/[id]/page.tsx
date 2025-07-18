@@ -57,7 +57,7 @@ export default function MarketPage({ params }: MarketPageProps) {
               <div className="stat">
                 <div className="stat-title">最大 LTV</div>
                 <div className="stat-value text-primary">
-                  {formatNumber(Number(market.lltv) / 1e18 * 100, 1)}%
+                  {formatNumber(Number(market.config.lltv) / 1e18 * 100, 1)}%
                 </div>
               </div>
             </div>
@@ -83,25 +83,45 @@ export default function MarketPage({ params }: MarketPageProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="stat bg-base-100 shadow rounded-lg">
               <div className="stat-title">借贷利率</div>
-              <div className="stat-value text-success">5.2%</div>
+              <div className="stat-value text-success">
+                {market.marketData?.rateAtTarget ? 
+                  `${((Math.pow(1 + Number(market.marketData.rateAtTarget) / 1e18, 31536000) - 1) * 100).toFixed(2)}%` : 
+                  'Loading...'
+                }
+              </div>
               <div className="stat-desc">年化利率</div>
             </div>
             
             <div className="stat bg-base-100 shadow rounded-lg">
               <div className="stat-title">总供应</div>
-              <div className="stat-value text-info">$2.5M</div>
-              <div className="stat-desc">抵押品总价值</div>
+              <div className="stat-value text-info">
+                {market.marketData?.totalSupplyAssets ? 
+                  `${(Number(market.marketData.totalSupplyAssets) / 1e18).toFixed(2)} ${market.loanTokenSymbol || 'Unknown'}` : 
+                  'Loading...'
+                }
+              </div>
+              <div className="stat-desc">总供应量</div>
             </div>
             
             <div className="stat bg-base-100 shadow rounded-lg">
               <div className="stat-title">总借贷</div>
-              <div className="stat-value text-warning">$1.8M</div>
+              <div className="stat-value text-warning">
+                {market.marketData?.totalBorrowAssets ? 
+                  `${(Number(market.marketData.totalBorrowAssets) / 1e18).toFixed(2)} ${market.loanTokenSymbol || 'Unknown'}` : 
+                  'Loading...'
+                }
+              </div>
               <div className="stat-desc">借贷资产总额</div>
             </div>
             
             <div className="stat bg-base-100 shadow rounded-lg">
               <div className="stat-title">利用率</div>
-              <div className="stat-value text-error">72%</div>
+              <div className="stat-value text-error">
+                {market.marketData?.totalSupplyAssets && market.marketData?.totalBorrowAssets ? 
+                  `${(Number(market.marketData.totalBorrowAssets * 10000n / market.marketData.totalSupplyAssets) / 100).toFixed(1)}%` : 
+                  'Loading...'
+                }
+              </div>
               <div className="stat-desc">资金利用率</div>
             </div>
           </div>
@@ -124,7 +144,7 @@ export default function MarketPage({ params }: MarketPageProps) {
                           {market.collateralTokenSymbol || 'Unknown'}
                         </div>
                         <div className="font-mono text-xs opacity-60 break-all">
-                          {market.collateralToken}
+                          {market.config.collateralToken}
                         </div>
                       </div>
                       <div>
@@ -133,7 +153,7 @@ export default function MarketPage({ params }: MarketPageProps) {
                           {market.loanTokenSymbol || 'Unknown'}
                         </div>
                         <div className="font-mono text-xs opacity-60 break-all">
-                          {market.loanToken}
+                          {market.config.loanToken}
                         </div>
                       </div>
                     </div>
@@ -144,13 +164,13 @@ export default function MarketPage({ params }: MarketPageProps) {
                       <div>
                         <div className="text-sm opacity-70 mb-1">预言机</div>
                         <div className="font-mono text-sm break-all">
-                          {market.oracle}
+                          {market.config.oracle}
                         </div>
                       </div>
                       <div>
                         <div className="text-sm opacity-70 mb-1">利率模型</div>
                         <div className="font-mono text-sm break-all">
-                          {market.irm}
+                          {market.config.irm}
                         </div>
                       </div>
                     </div>
@@ -160,7 +180,7 @@ export default function MarketPage({ params }: MarketPageProps) {
                     <div>
                       <div className="text-sm opacity-70 mb-1">清算阈值 (LLTV)</div>
                       <div className="text-lg font-semibold">
-                        {formatNumber(Number(market.lltv) / 1e18 * 100, 2)}%
+                        {formatNumber(Number(market.config.lltv) / 1e18 * 100, 2)}%
                       </div>
                       <div className="text-sm opacity-70">
                         当 LTV 达到此值时将触发清算

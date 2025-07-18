@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import { useMorphoActions } from '@/hooks/useMorphoActions';
 import { useMorphoPosition } from '@/hooks/useMorphoPosition';
-import { MarketConfig } from '@/hooks/useMorphoMarkets';
+import { ExtendedMarketConfig } from '@/hooks/useMorphoMarkets';
 import { formatNumber } from '@/utils/formatNumber';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 interface BorrowActionsProps {
-  marketParams: MarketConfig | null;
+  marketParams: ExtendedMarketConfig | null;
 }
 
 type ActionType = 'supply' | 'borrow' | 'repay' | 'withdraw';
@@ -94,7 +94,7 @@ export function BorrowActions({ marketParams }: BorrowActionsProps) {
         return '1000'; // 这里应该从用户余额获取
       case 'borrow':
         // 基于抵押品价值和 LTV 计算最大借贷额
-        const maxBorrow = Number(formatUnits(position.collateral, 18)) * (Number(marketParams.lltv) / 1e18) * 0.8; // 80% 安全边际
+        const maxBorrow = Number(formatUnits(position.collateral, 18)) * (Number(marketParams.config.lltv) / 1e18) * 0.8; // 80% 安全边际
         return maxBorrow.toString();
       case 'repay':
         return formatUnits(position.borrowAssets, 18);

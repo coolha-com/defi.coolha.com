@@ -6,7 +6,7 @@ import { ChainId, getChainAddresses, MarketId } from '@morpho-org/blue-sdk';
 import { fetchPosition } from '@morpho-org/blue-sdk-viem';
 import type { IPosition } from '@morpho-org/blue-sdk';
 import { Address } from 'viem';
-import { MarketConfig } from './useMorphoMarkets';
+import { ExtendedMarketConfig } from './useMorphoMarkets';
 
 export interface UserPosition {
   collateral: bigint;
@@ -18,7 +18,7 @@ export interface UserPosition {
 }
 
 export function useMorphoPosition(
-  marketParams: MarketConfig | null,
+  marketParams: ExtendedMarketConfig | null,
   chainId: ChainId = ChainId.EthMainnet
 ) {
   const { address } = useAccount();
@@ -58,7 +58,7 @@ export function useMorphoPosition(
           ? Number(borrowValue * 10000n / collateralValue) / 100
           : 0;
         
-        const liquidationThreshold = Number(marketParams.lltv) / 1e18 * 100;
+        const liquidationThreshold = Number(marketParams.config.lltv) / 1e18 * 100;
         const healthFactor = liquidationThreshold > 0 ? liquidationThreshold / ltv : Infinity;
 
         return {

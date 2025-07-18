@@ -5,11 +5,12 @@ import { useAccount } from 'wagmi';
 import ConnectWallet from '@/components/ui/ConnectWallet';
 import ErrorBoundary, { NetworkErrorFallback } from '@/components/ui/ErrorBoundary';
 import { NetworkIndicator } from '@/components/ui/NetworkStatus';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function BorrowPage() {
   const { address } = useAccount();
   const { data: markets } = useMorphoMarkets();
+  const router = useRouter();
   if (!address) {
     return (
       /* 未连接钱包状态 */
@@ -175,8 +176,10 @@ export default function BorrowPage() {
                         totalBorrow: `${(Number(totalBorrowAssets) / 1e18).toFixed(2)} ${loanSymbol}`,
                         liquidity: `${(Number(liquidity) / 1e18).toFixed(2)} ${loanSymbol}`,
                         utilization: `${utilization.toFixed(1)}%`,
-                        borrowRate: marketData.borrowRate ? `${(Number(marketData.borrowRate) * 100).toFixed(2)}%` : 'N/A',
-                        supplyRate: marketData.supplyRate ? `${(Number(marketData.supplyRate) * 100).toFixed(2)}%` : 'N/A',
+                        borrowRate: marketData.rateAtTarget ? 
+                            `${((Math.pow(1 + Number(marketData.rateAtTarget) / 1e18, 31536000) - 1) * 100).toFixed(2)}%` : 'N/A',
+                        supplyRate: marketData.rateAtTarget ? 
+                            `${((Math.pow(1 + Number(marketData.rateAtTarget) / 1e18, 31536000) - 1) * utilization * (1 - Number(marketData.fee || 0) / 1e18) * 100).toFixed(2)}%` : 'N/A',
                         loanSymbol,
                         collateralSymbol
                       };
@@ -185,12 +188,11 @@ export default function BorrowPage() {
                     const data = formatMarketData();
 
                     return (
-                      <Link
-                        key={market.id}
-                        href={`/borrow/market/${encodeURIComponent(market.id)}`}
-                        className="contents"
-                      >
-                        <tr className="hover:bg-base-200 cursor-pointer">
+                        <tr 
+                          key={market.id}
+                          className="hover:bg-base-200 cursor-pointer"
+                          onClick={() => router.push(`/borrow/market/${encodeURIComponent(market.id)}`)}
+                        >
                           <td>
                             <div className="flex items-center gap-3">
                               <div className="avatar">
@@ -231,7 +233,7 @@ export default function BorrowPage() {
                           </td>
                           <td>
                             <span className="font-semibold">
-                              {(Number(market.lltv) / 1e18 * 100).toFixed(2)}%
+                              {(Number(market.config.lltv) / 1e18 * 100).toFixed(2)}%
                             </span>
                           </td>
                           <td>
@@ -277,7 +279,6 @@ export default function BorrowPage() {
                             </div>
                           </td>
                         </tr>
-                      </Link>
                     );
                   })}
                 </tbody>

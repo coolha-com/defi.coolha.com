@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAccount, useWalletClient, usePublicClient } from 'wagmi';
 import { ChainId, getChainAddresses } from '@morpho-org/blue-sdk';
 import { Address, parseUnits, erc20Abi } from 'viem';
-import { MarketConfig } from './useMorphoMarkets';
+import { ExtendedMarketConfig } from './useMorphoMarkets';
 
 const MORPHO_ABI = [
   {
@@ -100,7 +100,7 @@ export function useMorphoActions(chainId: ChainId = ChainId.EthMainnet) {
   // 供应抵押品
   const supplyCollateral = useMutation({
     mutationFn: async ({ marketParams, amount, decimals = 18 }: {
-      marketParams: MarketConfig;
+      marketParams: ExtendedMarketConfig;
       amount: string;
       decimals?: number;
     }) => {
@@ -112,7 +112,7 @@ export function useMorphoActions(chainId: ChainId = ChainId.EthMainnet) {
       
       // 首先批准代币
       const approveTx = await walletClient.writeContract({
-        address: marketParams.collateralToken,
+        address: marketParams.config.collateralToken,
         abi: erc20Abi,
         functionName: 'approve',
         args: [morphoAddress, assets],
@@ -127,11 +127,11 @@ export function useMorphoActions(chainId: ChainId = ChainId.EthMainnet) {
         functionName: 'supplyCollateral',
         args: [
           {
-            loanToken: marketParams.loanToken,
-            collateralToken: marketParams.collateralToken,
-            oracle: marketParams.oracle,
-            irm: marketParams.irm,
-            lltv: marketParams.lltv,
+            loanToken: marketParams.config.loanToken,
+            collateralToken: marketParams.config.collateralToken,
+            oracle: marketParams.config.oracle,
+            irm: marketParams.config.irm,
+            lltv: marketParams.config.lltv,
           },
           assets,
           address,
@@ -147,7 +147,7 @@ export function useMorphoActions(chainId: ChainId = ChainId.EthMainnet) {
   // 借贷
   const borrow = useMutation({
     mutationFn: async ({ marketParams, amount, decimals = 18 }: {
-      marketParams: MarketConfig;
+      marketParams: ExtendedMarketConfig;
       amount: string;
       decimals?: number;
     }) => {
@@ -163,11 +163,11 @@ export function useMorphoActions(chainId: ChainId = ChainId.EthMainnet) {
         functionName: 'borrow',
         args: [
           {
-            loanToken: marketParams.loanToken,
-            collateralToken: marketParams.collateralToken,
-            oracle: marketParams.oracle,
-            irm: marketParams.irm,
-            lltv: marketParams.lltv,
+            loanToken: marketParams.config.loanToken,
+            collateralToken: marketParams.config.collateralToken,
+            oracle: marketParams.config.oracle,
+            irm: marketParams.config.irm,
+            lltv: marketParams.config.lltv,
           },
           assets,
           0n, // shares = 0, use assets
@@ -184,7 +184,7 @@ export function useMorphoActions(chainId: ChainId = ChainId.EthMainnet) {
   // 还款
   const repay = useMutation({
     mutationFn: async ({ marketParams, amount, decimals = 18, useShares = false }: {
-      marketParams: MarketConfig;
+      marketParams: ExtendedMarketConfig;
       amount: string;
       decimals?: number;
       useShares?: boolean;
@@ -197,7 +197,7 @@ export function useMorphoActions(chainId: ChainId = ChainId.EthMainnet) {
       
       // 批准代币
       const approveTx = await walletClient.writeContract({
-        address: marketParams.loanToken,
+        address: marketParams.config.loanToken,
         abi: erc20Abi,
         functionName: 'approve',
         args: [morphoAddress, value],
@@ -211,11 +211,11 @@ export function useMorphoActions(chainId: ChainId = ChainId.EthMainnet) {
         functionName: 'repay',
         args: [
           {
-            loanToken: marketParams.loanToken,
-            collateralToken: marketParams.collateralToken,
-            oracle: marketParams.oracle,
-            irm: marketParams.irm,
-            lltv: marketParams.lltv,
+            loanToken: marketParams.config.loanToken,
+            collateralToken: marketParams.config.collateralToken,
+            oracle: marketParams.config.oracle,
+            irm: marketParams.config.irm,
+            lltv: marketParams.config.lltv,
           },
           useShares ? 0n : value,
           useShares ? value : 0n,
@@ -232,7 +232,7 @@ export function useMorphoActions(chainId: ChainId = ChainId.EthMainnet) {
   // 提取抵押品
   const withdrawCollateral = useMutation({
     mutationFn: async ({ marketParams, amount, decimals = 18 }: {
-      marketParams: MarketConfig;
+      marketParams: ExtendedMarketConfig;
       amount: string;
       decimals?: number;
     }) => {
@@ -248,11 +248,11 @@ export function useMorphoActions(chainId: ChainId = ChainId.EthMainnet) {
         functionName: 'withdrawCollateral',
         args: [
           {
-            loanToken: marketParams.loanToken,
-            collateralToken: marketParams.collateralToken,
-            oracle: marketParams.oracle,
-            irm: marketParams.irm,
-            lltv: marketParams.lltv,
+            loanToken: marketParams.config.loanToken,
+            collateralToken: marketParams.config.collateralToken,
+            oracle: marketParams.config.oracle,
+            irm: marketParams.config.irm,
+            lltv: marketParams.config.lltv,
           },
           assets,
           address,
