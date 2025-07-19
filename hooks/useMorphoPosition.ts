@@ -3,8 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAccount, usePublicClient } from 'wagmi';
 import { ChainId, getChainAddresses, MarketId } from '@morpho-org/blue-sdk';
-import { fetchPosition } from '@morpho-org/blue-sdk-viem';
-import type { IPosition } from '@morpho-org/blue-sdk';
+import { AccrualPosition } from '@morpho-org/blue-sdk';
+import '@morpho-org/blue-sdk-viem/lib/augment/Position';
 import { Address } from 'viem';
 import { ExtendedMarketConfig } from './useMorphoMarkets';
 
@@ -43,12 +43,12 @@ export function useMorphoPosition(
         }
         
         // 添加超时处理
-        const fetchPromise = fetchPosition(address, marketId, publicClient);
+        const fetchPromise = AccrualPosition.fetch(address, marketId, publicClient);
         const timeoutPromise = new Promise((_, reject) => 
           setTimeout(() => reject(new Error('Position fetch timeout')), 8000)
         );
         
-        const position = await Promise.race([fetchPromise, timeoutPromise]) as IPosition;
+        const position = await Promise.race([fetchPromise, timeoutPromise]) as AccrualPosition;
 
         // 计算健康因子和 LTV
         const collateralValue = position.collateral; // 需要根据价格计算实际价值
