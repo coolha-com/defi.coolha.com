@@ -46,12 +46,13 @@ export const Navbar: React.FC<NavbarProps> = ({ className }) => {
         </div>
 
         {/* Logo */}
-        <Link href="/" className="hidden md:flex btn btn-ghost text-xl font-bold">
+        <Link href="/" className="hidden md:flex btn btn-ghost text-xl font-bold ">
           <Image
-            src="/logo/透明LOGO绿色.png"
+            src="/favicon.ico"
             alt="Coolha Logo"
             width={32}
             height={32}
+            className=' rounded-full'
           />
           Coolha DeFi
         </Link>
