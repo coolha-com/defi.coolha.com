@@ -6,6 +6,7 @@
  * 参考文档：https://daisyui.com/docs/themes/
  */
 @plugin "daisyui" {
+  logs: false;
   themes:
     light --default,        /* 设置 light 为默认主题 */
     dark --prefersdark;     /* 设置 dark 为暗色模式首选主题 */
@@ -47,7 +48,7 @@
   --color-success-content: #ffffff; /* 成功色上的文字色 */
   --color-warning: #f59e0b;      /* 警告色 - 橙色 */
   --color-warning-content: #ffffff; /* 警告色上的文字色 */
-  --color-error: #f59e0b;        /* 错误色 - 橙红色 */
+  --color-error: #f87171;        /* 错误色 - 红色 */
   --color-error-content: #ffffff; /* 错误色上的文字色 */
   
   /* 圆角设置 - 统一使用较大圆角营造现代感 */
@@ -78,7 +79,7 @@
   
   /* 基础背景色系 - 暗色主题配色 */
   --color-base-100: #000000;     /* 主背景色 - 深灰 */
-  --color-base-200: #222222;     /* 次级背景色 - 中深灰 */
+  --color-base-200: #333333;     /* 次级背景色 - 中深灰 */
   --color-base-300: #333333;     /* 三级背景色 - 浅深灰 */
   --color-base-content: #ffffff; /* 基础文字色 - 白色 */
   
@@ -113,8 +114,8 @@
   --size-selector: 0.25rem;   /* 选择器尺寸 */
   --size-field: 0.25rem;      /* 输入框尺寸 */
   
-  /* 边框和效果 - 与亮色主题保持一致 */
-  --border: 1px;              /* 边框宽度 */
+  /* 边框和效果 - 深色模式下增强边框显示 */
+  --border: 1px;              /* 边框宽度 - 增加到3px提高可见性 */
   --depth: 1;                 /* 深度效果 */
   --noise: 0.5;               /* 噪点效果 */
 }

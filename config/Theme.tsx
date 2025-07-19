@@ -4,7 +4,7 @@ import { ThemeProvider } from "next-themes";
 
 export function Theme({ children }: any) {
   return (
-    <ThemeProvider>
+    <ThemeProvider defaultTheme = 'system' >
       {children}
     </ThemeProvider>
   )

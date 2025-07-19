@@ -4,9 +4,10 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaWallet, FaBars } from 'react-icons/fa';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { cn } from '@/lib/utils';
 import ConnectWallet from '../ui/ConnectWallet';
+import ChainSwitcher from '../ui/ChainSwitcher';
+import { ThemeToggle } from '../ui/ThemeToggle';
 
 interface NavbarProps {
   className?: string;
@@ -87,6 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className }) => {
       {/* Theme toggle and Connect wallet button */}
       <div className="navbar-end gap-2">
         <ThemeToggle />
+        <ChainSwitcher />
         <ConnectWallet />
       </div>
     </div>

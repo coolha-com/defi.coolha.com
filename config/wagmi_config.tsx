@@ -1,6 +1,6 @@
 
 import { http, createConfig, injected, createStorage, cookieStorage } from 'wagmi'
-import { mainnet, polygon, base, unichain, optimism /* baseSepolia */ } from 'wagmi/chains'
+import { mainnet, polygon, base, unichain, } from 'wagmi/chains'
 
 import { coinbaseWallet } from 'wagmi/connectors'
 
@@ -11,14 +11,12 @@ const rpcConfig = {
 };
 
 export const config = createConfig({
-    chains: [mainnet, polygon, base, unichain, optimism /* baseSepolia */],
+    chains: [mainnet, polygon, base, unichain,],
     transports: {
-        [mainnet.id]: http('https://eth-mainnet.public.blastapi.io', rpcConfig),
-        [polygon.id]: http('https://polygon-rpc.com', rpcConfig),
-        [base.id]: http('https://base-rpc.publicnode.com', rpcConfig),
-        [unichain.id]: http('https://sepolia.unichain.org', rpcConfig),
-        [optimism.id]: http('https://mainnet.optimism.io', rpcConfig),
-        /* [baseSepolia.id]: http(`https://sepolia.base.org`), */
+        [mainnet.id]: http(),
+        [polygon.id]: http(),
+        [base.id]: http(),
+        [unichain.id]: http()
     },
     connectors: [
         injected(),

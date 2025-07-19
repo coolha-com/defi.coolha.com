@@ -19,7 +19,7 @@ const queryClient = new QueryClient({
 
 export function Wagmi({ children }) {
     return (
-        <WagmiProvider config={config}>
+        <WagmiProvider config={config} >
             <QueryClientProvider client={queryClient}>
 
                 {children}

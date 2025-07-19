@@ -20,7 +20,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="btn btn-ghost btn-circle"
+      className="btn btn-soft  btn-circle"
       aria-label="切换主题"
     >
       {theme === 'light' ? (
