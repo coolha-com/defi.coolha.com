@@ -34,15 +34,15 @@
   --color-primary-content: #000000; /* 主色上的文字色 */
   
   /* 辅助色系 */
-  --color-secondary: #f3f4f6;        /* 次要色 - 中性灰 */
-  --color-secondary-content: #ffffff; /* 次要色上的文字色 */
-  --color-accent: #ffffff;            /* 强调色 - 白色 */
+  --color-secondary: #8b5cf6;        /* 次要色 - 中性灰 */
+  --color-secondary-content: #000000; /* 次要色上的文字色 */
+  --color-accent: #06b6d4;            /* 强调色 - 白色 */
   --color-accent-content: #000000;    /* 强调色上的文字色 */
   --color-neutral: #374151;           /* 中性色 - 深灰 */
-  --color-neutral-content: #ffffff;   /* 中性色上的文字色 */
+  --color-neutral-content: #000000;   /* 中性色上的文字色 */
   
   /* 状态色系 */
-  --color-info: #3b82f6;         /* 信息色 - 蓝色 */
+  --color-info: #8b5cf6;         /* 信息色 - 蓝色 */
   --color-info-content: #ffffff; /* 信息色上的文字色 */
   --color-success: #10b981;      /* 成功色 - 绿色 */
   --color-success-content: #ffffff; /* 成功色上的文字色 */

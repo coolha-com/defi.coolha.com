@@ -50,7 +50,7 @@ export default function Home() {
             {/* 统计数据 */}
              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto">
                <div className="bg-base-100 backdrop-blur-sm rounded-2xl p-6 border border-primary/30 hover:border-primary/50 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-primary/20">
-                 <div className="text-3xl font-bold text-primary mb-2">$12.8M+</div>
+                 <div className="text-3xl font-bold text-primary mb-2">$1.478B+</div>
                  <div className="text-base-content/70">总锁定价值</div>
                </div>
                <div className="bg-base-100 backdrop-blur-sm rounded-2xl p-6 border border-secondary/30 hover:border-secondary/50 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-secondary/20">
