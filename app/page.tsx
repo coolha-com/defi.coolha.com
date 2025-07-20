@@ -27,7 +27,7 @@ export default function Home() {
              <div className="mb-8 relative">
                <div className="absolute inset-0 bg-primary/30 rounded-full blur-xl animate-pulse"></div>
               <Image
-                src="/logo/头像LOGO图.png"
+                src="/favicon.ico"
                 alt="Coolha Logo"
                 width={120}
                 height={120}
@@ -42,9 +42,7 @@ export default function Home() {
             
             {/* 副标题 */}
             <p className="text-xl md:text-2xl text-base-content/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-              🚀 下一代去中心化金融平台
-              <br />
-              <span className="text-lg text-base-content/60">安全 • 高效 • 创新</span>
+              去中心化金融集合平台
             </p>
             
             {/* 统计数据 */}

@@ -21,7 +21,7 @@ export default function Navbar({ className }: NavbarProps) {
   ];
 
   return (
-    <div className={cn('navbar bg-base-100 shadow-lg', className)}>
+    <div className={cn('navbar bg-base-100 shadow-lg fixed top-0 w-full z-50', className)}>
       <div className="navbar-start">
         {/* Mobile menu button */}
         <div className="dropdown lg:hidden">
