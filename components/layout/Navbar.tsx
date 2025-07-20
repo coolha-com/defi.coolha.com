@@ -13,7 +13,7 @@ interface NavbarProps {
   className?: string;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ className }) => {
+export default function Navbar({ className }: NavbarProps) {
 
   const navItems = [
     { href: '/earn', label: '赚取' },
@@ -30,7 +30,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className }) => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            className="menu  dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
             {navItems.map((item) => (
               <li key={item.href}>
@@ -42,6 +42,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className }) => {
                 </Link>
               </li>
             ))}
+            <li>  <ThemeToggle /></li>
           </ul>
         </div>
 
@@ -67,33 +68,32 @@ export const Navbar: React.FC<NavbarProps> = ({ className }) => {
         </Link>
 
 
-              {/* Desktop menu */}
-      <div className=" hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          {navItems.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                className="text-base-content transition-colors"
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+        {/* Desktop menu */}
+        <div className=" hidden lg:flex">
+          <ul className="menu menu-horizontal px-1">
+            {navItems.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="text-base-content transition-colors"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
 
 
       {/* Theme toggle and Connect wallet button */}
       <div className="navbar-end gap-2">
-        <ThemeToggle />
+        <div className='hidden md:block'><ThemeToggle /></div>
+
         <ChainSwitcher />
         <ConnectWallet />
       </div>
     </div>
   );
 };
-
-export default Navbar;
